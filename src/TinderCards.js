@@ -1,25 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TinderCard from "react-tinder-card";
 import "./TinderCards.css";
-function TinderCards() {
-  const [people, setPeople] = useState([
-    {
-      name: "mia",
-      url:
-        "https://i2.wp.com/metro.co.uk/wp-content/uploads/2020/07/Screen-Shot-2020-07-02-at-11.37.51-am-5a6f.png?quality=90&strip=all&zoom=1&resize=644%2C456&ssl=1",
-    },
-    {
-      name: "jessica",
+import database from "./firebase";
 
-      url:
-        "https://vignette.wikia.nocookie.net/disney/images/1/1c/Jessica_Chastain.jpg/revision/latest?cb=20190827205115",
-    },
-  ]);
-  //const people = [];
+function TinderCards() {
+  const [people, setPeople] = useState([]);
+  //a piece of code which runs on a condition
+  useEffect(() => {
+    //any time the db changes take picture of it send me the new doc and set it inside the people array
+    const unsubscribe = database
+      .collection("people")
+      .onSnapshot((snapshot) =>
+        setPeople(snapshot.docs.map((doc) => doc.data()))
+      );
+
+    return () => {
+      //this is the cleanup
+      unsubscribe();
+    };
+    //will run once when component loads
+  }, []);
 
   return (
     <div>
-      <h1>TidnerCards</h1>
       <div className="tinderCards__cardContainer">
         {people.map((person) => (
           <TinderCard
