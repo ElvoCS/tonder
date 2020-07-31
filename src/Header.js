@@ -7,6 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 function Header() {
   return (
     <div className="header">
+      {/* this makes the nice clicking effect */}
       <IconButton>
         <PersonIcon className="header__icon" fontSize="large" />
       </IconButton>
